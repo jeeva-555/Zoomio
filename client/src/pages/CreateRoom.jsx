@@ -11,6 +11,12 @@ const[IsCopied,setIsCopied] = useState(false);
 const{UserName} = props;
 
 
+const handleOnClick = ()=>{
+  if(!RoomId)return alert("please generate roomid")
+  Navigate(`/videochat/${RoomId}`)
+}
+
+
 
 const GeneratorRex = ()=>{
      let roomId = uuid();
@@ -64,6 +70,16 @@ const copyroomid = async()=>{
             >
                 Generate Roomid
             </button> 
+
+            
+            <button 
+            className='w-full px-2 py-4 text-orange-600 bg-[#151C23] font-medium
+            hover:bg-orange-600 hover:text-white capitalize'
+            onClick={handleOnClick}
+            >
+                join new room
+            </button>
+
             <button 
             className='w-full px-2 py-4 text-orange-600 bg-[#151C23] font-medium
             hover:bg-orange-600 hover:text-white '

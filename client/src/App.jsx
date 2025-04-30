@@ -4,7 +4,7 @@ import SignUp from './pages/SignUp'
 import CreateRoom from './pages/CreateRoom'
 import JoinRoom from './pages/JoinRoom'
 import VideoChat from './pages/VideoChat'
-import Navbar from './components/Navbar'
+
 
 const App = () => {
 
