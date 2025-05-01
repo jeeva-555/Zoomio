@@ -16,7 +16,7 @@ const App = () => {
           <Route path='/' element={<SignUp  setUserName = {setUserName} UserName={UserName}/>}/>
           <Route path='/create-room' element={<CreateRoom UserName={UserName}/>}/>
           <Route path='/join-room' element={<JoinRoom UserName={UserName}/>}/>
-          <Route path='/videochat/:roomid' element={<VideoChat UserName={UserName}/>}/>
+          <Route path='/videochat/:roomid' element={<VideoChat UserName={UserName} setUserName = {setUserName}/>}/>
       </Routes>
     </div>
   )
