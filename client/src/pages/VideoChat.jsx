@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getUserMediaStream } from '../peermodules/getusermedia';
 import Toast from './Toast';
+import RejectToast from '../components/RejectToast';
+import Oncalltoast from '../components/Oncalltoast';
 
 function VideoChat(props) {
 
@@ -26,7 +28,10 @@ function VideoChat(props) {
   const [incomingcall,setincomingcall] = useState(false);
   const callref = useRef(null);
   const [callerguy,setcallerguy] = useState("someone");
-
+  const [calleeguy,setcalleeguy] = useState("someone");
+  const callersocketid = useRef(null);
+  const [rejecttoast,setrejecttoast] = useState(false);
+  const[oncalltoast,setoncalltoast] = useState(false);
 
   useEffect(()=>{
 
@@ -42,7 +47,7 @@ function VideoChat(props) {
      
          peer.current.on('open', (id) => {
            console.log('My peer ID is:', id);
-           PeerId.current;
+           PeerId.current = id;
            socket.current.emit("NewUser",{PeerId:id,SocketId : SocketId.current,UserName,roomid});
          });
 
@@ -50,15 +55,28 @@ function VideoChat(props) {
       console.log(users);
       setParticipants(users)});
 
-      socket.current.on("caller-info",from=>{
-        setcallerguy(from);
-      })
+      socket.current.on("caller-info",data=>{
+        callersocketid.current=data.fromsocketid;
+      
+        setcallerguy(data.from);
+      });
+
+      socket.current.on("callee-reject",from=>{
+        setrejecttoast(true);
+        setcalleeguy(from);
+        setTimeout(() => {
+          setrejecttoast(false);
+        },5000);
+        setoncall(false)
+      });
+
+     
 
       peer.current.on ("call",async(call)=>{
        callref.current = call;
-       setincomingcall(true)
+       setincomingcall(true);
         
-      })
+      });
     
 
     //  navigator.mediaDevices.getUserMedia({video:true,audio:true})
@@ -74,6 +92,14 @@ function VideoChat(props) {
             track.stop();
           });
         }
+
+        if (peer.current) {
+          peer.current.destroy();
+        }
+
+        if (socket.current) {
+          socket.current.disconnect();
+        }
      }
   },[]);
 
@@ -82,8 +108,9 @@ function VideoChat(props) {
 
 
   const call = async(peerid,socketid)=>{
+    if(oncall) return alert("he's on a call please try after sometime")
       const stream = await getUserMediaStream(currentstreamref,myvideoref);
-      socket.current.emit("caller",{from : UserName,to : socketid});
+      socket.current.emit("caller",{from : UserName,fromsocketid:SocketId.current,to : socketid});
       const call = peer.current.call(peerid,stream);
       setoncall(true);
       call.on("stream",stream=>remotevideoref.current.srcObject=stream);
@@ -103,7 +130,8 @@ function VideoChat(props) {
     callref.current.close();
     callref.current= null;
     setincomingcall(false);
-    
+    socket.current.emit("call-rejected",{to:callersocketid.current,from:UserName});
+    console.log(callersocketid.current);
   }
 
 
@@ -112,8 +140,9 @@ function VideoChat(props) {
   return (
     <div className='flex  h-screen  bg-[#151C23]'>
       <Userspanel UserName={UserName} Participants={Participants} oncall={oncall} call={call}/>
-      <Videos myvideoref={myvideoref} remotevideoref={remotevideoref}/>
+      <Videos myvideoref={myvideoref} setoncall={setoncall} remotevideoref={remotevideoref} currentstreamref={currentstreamref} callref={callref}/>
       {incomingcall && <Toast reject={reject} answer={answer} caller={callerguy}/> }
+      {rejecttoast && <RejectToast callee={calleeguy}/>}
     </div>
   )
 }

@@ -31,8 +31,14 @@ io.on("connection", socket => {
 
 
     socket.on("caller",data=>{
-        io.to(data.to).emit("caller-info",data.from)
-    })
+        io.to(data.to).emit("caller-info",data)
+    });
+
+    socket.on("call-rejected",data=>{
+        io.to(data.to).emit("callee-reject",data.from)
+    });
+
+    
 
     socket.on("disconnect", () => {
         for (const room in Rooms) {
