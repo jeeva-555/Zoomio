@@ -38,6 +38,10 @@ io.on("connection", socket => {
         io.to(data.to).emit("callee-reject",data.from)
     });
 
+    socket.on("message",(data)=>{
+        io.to(data.roomid).emit("messages",data);
+    })
+
     
 
     socket.on("disconnect", () => {

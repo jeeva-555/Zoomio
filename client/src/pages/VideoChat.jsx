@@ -9,6 +9,7 @@ import { getUserMediaStream } from '../peermodules/getusermedia';
 import Toast from './Toast';
 import RejectToast from '../components/RejectToast';
 import Oncalltoast from '../components/Oncalltoast';
+import Chat from '../components/Chat';
 
 function VideoChat(props) {
 
@@ -138,11 +139,12 @@ function VideoChat(props) {
 
 
   return (
-    <div className='flex  h-screen  bg-[#151C23]'>
+    <div className='flex items-center  h-screen  bg-[#151C23]'>
       <Userspanel UserName={UserName} Participants={Participants} oncall={oncall} call={call}/>
-      <Videos myvideoref={myvideoref} setoncall={setoncall} remotevideoref={remotevideoref} currentstreamref={currentstreamref} callref={callref}/>
+      <Videos  myvideoref={myvideoref} setoncall={setoncall} remotevideoref={remotevideoref} currentstreamref={currentstreamref} callref={callref}/>
       {incomingcall && <Toast reject={reject} answer={answer} caller={callerguy}/> }
       {rejecttoast && <RejectToast callee={calleeguy}/>}
+      <Chat UserName={UserName} socket={socket}/>
     </div>
   )
 }

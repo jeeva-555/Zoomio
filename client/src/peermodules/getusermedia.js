@@ -17,6 +17,6 @@ export const getUserMediaStream = async (streamRef,myVideoRef) => {
 
 
   export const getuserscreenstream = async()=>{
-    const screenstream = await navigator.mediaDevices.getDisplayMedia({ video: true , audio: true });
+    const screenstream = await navigator.mediaDevices.getDisplayMedia({ video: true , audio: false });
     return screenstream;
   }

@@ -7,9 +7,9 @@ function Userspanel({UserName,Participants,call,oncall}) {
 
     const {roomid} = useParams();
   return (
-    <div className='w-1/6 h-screen bg-[#151C23] flex flex-col'>
+    <div className='w-[15vw] h-screen bg-[#151C23] flex flex-col'>
 
-        <h1 className='px-4 py-2 text-2xl text-center font-semibold mb-1 capitalize bg-[#28ACE3] text-white'>
+        <h1 className='px-4 py-2 text-2xl text-center font-semibold mb-1 capitalize bg-[#42475E] text-white'>
             
             participants</h1>
         {Participants.map((user,ind)=>{
@@ -24,7 +24,7 @@ function Userspanel({UserName,Participants,call,oncall}) {
         )
         })}
 
-        <p className='mt-auto text-center bg-green-500 px-2 py-2 text-white font-medium'>roomid : {roomid}</p>
+        <p className='mt-auto text-center bg-orange-600 px-2 py-2 text-white font-medium'>roomid : {roomid}</p>
     </div>
   )
 }
