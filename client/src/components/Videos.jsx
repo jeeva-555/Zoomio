@@ -5,7 +5,7 @@ function Videos(props) {
     const{myvideoref,remotevideoref,currentstreamref,callref,setoncall} = props;
   return (
 
-    <div className='h-screen  w-[60vw]'>
+    <div className='md:h-screen w-full h-auto md:w-[60vw]'>
       
     <div className='relative'>
         <video ref={myvideoref} width="160" height="120" muted className='absolute bottom-0 right-0 border-2 border-b-black
@@ -16,7 +16,7 @@ function Videos(props) {
     </div>
     
 
-        <Controllers currentstreamref={currentstreamref} myvideoref={myvideoref} setoncall={setoncall} callref={callref}/>
+        <Controllers  remotevideoref={remotevideoref} currentstreamref={currentstreamref} myvideoref={myvideoref} setoncall={setoncall} callref={callref}/>
 
     
     </div>

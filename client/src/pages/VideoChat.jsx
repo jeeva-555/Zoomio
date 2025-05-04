@@ -139,12 +139,12 @@ function VideoChat(props) {
 
 
   return (
-    <div className='flex items-center  h-screen  bg-[#151C23]'>
+    <div className='flex items-center flex-col md:flex-row  h-screen  bg-[#151C23]'>
       <Userspanel UserName={UserName} Participants={Participants} oncall={oncall} call={call}/>
       <Videos  myvideoref={myvideoref} setoncall={setoncall} remotevideoref={remotevideoref} currentstreamref={currentstreamref} callref={callref}/>
       {incomingcall && <Toast reject={reject} answer={answer} caller={callerguy}/> }
       {rejecttoast && <RejectToast callee={calleeguy}/>}
-      <Chat UserName={UserName} socket={socket}/>
+      <Chat UserName={UserName} socket={socket.current}/>
     </div>
   )
 }
